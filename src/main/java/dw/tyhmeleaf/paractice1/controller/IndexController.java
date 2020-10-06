@@ -6,6 +6,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import dw.tyhmeleaf.paractice1.dto.ErrorMessage;
 import dw.tyhmeleaf.paractice1.dto.IndexDTO;
 import dw.tyhmeleaf.paractice1.entity.DataForm;
+import dw.tyhmeleaf.paractice1.repo.IndexRepo;
 import dw.tyhmeleaf.paractice1.services.IndexService;
 
 import javax.validation.Valid;
@@ -24,6 +25,9 @@ public class IndexController {
     
     @Autowired
     private IndexService indexService;
+
+	@Autowired
+	private IndexRepo indexRepo;
 
     @GetMapping
     public String showPage(Model model) {
@@ -45,7 +49,7 @@ public class IndexController {
 				dataForm.setFirstname(indexDTO.getFirstname());
 				dataForm.setLastname(indexDTO.getLastname());
 				indexService.save(dataForm);
-				return "redirect:/";
+				return "redirect:/table";
 			}else {
 				ErrorMessage msg = new ErrorMessage();
 				msg.getMessages().add("Email already used");
@@ -61,5 +65,12 @@ public class IndexController {
 			model.addAttribute("ERROR", msg);
 			return "index";
 		}		
+	}
+
+	@GetMapping("/table")
+	public String index(Model model) {
+		Iterable<DataForm> listOfUser = indexRepo.findAll();
+		model.addAttribute("listOfUser", listOfUser);
+		return "table";
 	}
 }

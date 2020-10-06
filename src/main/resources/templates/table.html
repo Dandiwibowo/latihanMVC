@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+        <div th:if=${ERROR}>
+          <div class="pink">
+            <strong>Error(s)</strong>
+            <ul>
+              <li th:each="msg: ${ERROR.messages}" th:text="${msg}"></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row container" style="padding-top:10%;">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Category</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="user: ${listOfUser}">
+                <td th:text="${user.id}">1</th>
+                <td th:text="${user.firstname}">Mark</td>
+                <td th:text="${user.lastname}">Otto</td>
+                <td th:text="${user.email}">@mdo</td>
+                <td th:text="${user.password}">XXXX</td>
+                
+              </tr>				
+            </tbody>
+          </table>
+        </div>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </body>
+</html>
+      
