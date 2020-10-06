@@ -1,0 +1,65 @@
+package dw.tyhmeleaf.paractice1.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import dw.tyhmeleaf.paractice1.dto.ErrorMessage;
+import dw.tyhmeleaf.paractice1.dto.IndexDTO;
+import dw.tyhmeleaf.paractice1.entity.DataForm;
+import dw.tyhmeleaf.paractice1.services.IndexService;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+@Controller
+@RequestMapping("/")
+public class IndexController {
+    
+    @Autowired
+    private IndexService indexService;
+
+    @GetMapping
+    public String showPage(Model model) {
+        model.addAttribute("indexDTO", new IndexDTO());
+        return "index";
+    }
+    
+    @PostMapping
+	public String save(@Valid IndexDTO indexDTO, 
+		BindingResult bindingResult, 
+		Model model, 
+		RedirectAttributes redirectAttribute) {
+		
+		if(!bindingResult.hasErrors()) {
+			if(indexService.findByEmail(indexDTO.getEmail()) == null) {
+				DataForm dataForm = new DataForm();
+				dataForm.setEmail(indexDTO.getEmail());
+				dataForm.setPassword(indexDTO.getPassword());
+				dataForm.setFirstname(indexDTO.getFirstname());
+				dataForm.setLastname(indexDTO.getLastname());
+				indexService.save(dataForm);
+				return "redirect:/";
+			}else {
+				ErrorMessage msg = new ErrorMessage();
+				msg.getMessages().add("Email already used");
+				model.addAttribute("indexDTO", indexDTO);
+				return "index";
+			}
+		}else {
+			ErrorMessage msg = new ErrorMessage();
+			for(ObjectError err: bindingResult.getAllErrors()) {
+				msg.getMessages().add(err.getDefaultMessage());
+			}
+			model.addAttribute("indexDTO", indexDTO);
+			model.addAttribute("ERROR", msg);
+			return "index";
+		}		
+	}
+}
