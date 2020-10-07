@@ -18,9 +18,9 @@ public class DataForm {
     private String firstname;
     @Column (length = 20,nullable = true)
     private String lastname;
-    @Column (length = 20,nullable = false, unique = true)
+    @Column (length = 50,nullable = false, unique = true)
     private String email;
-    @Column (length = 20,nullable = false)
+    @Column (length = 50,nullable = false)
     private String password;
 
     public Long getId() {

@@ -9,5 +9,5 @@ import dw.tyhmeleaf.paractice1.entity.DataForm;
 public interface IndexRepo extends PagingAndSortingRepository <DataForm, Long>{
     public List<DataForm> findByFirstname(String firstname);
 
-	public List<DataForm> findByEmail(String email);
+	public DataForm findByEmail(String email);
 }

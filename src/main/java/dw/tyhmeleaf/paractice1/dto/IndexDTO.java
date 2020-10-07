@@ -3,6 +3,7 @@ package dw.tyhmeleaf.paractice1.dto;
 import javax.validation.constraints.NotEmpty;
 public class IndexDTO {
     
+    
     @NotEmpty(message = "Pleas fill this form")
     private String firstname;
     @NotEmpty(message = "Pleas fill this form")
@@ -43,6 +44,8 @@ public class IndexDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    
 
 
 }

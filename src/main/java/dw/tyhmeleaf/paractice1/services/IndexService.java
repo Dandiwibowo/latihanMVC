@@ -36,7 +36,7 @@ public class IndexService {
         return indexRepo.findByFirstname(firstname);
     }
 
-    public List<DataForm> findByEmail(String email){
+    public DataForm findByEmail(String email){
         return indexRepo.findByEmail(email);
     }
     

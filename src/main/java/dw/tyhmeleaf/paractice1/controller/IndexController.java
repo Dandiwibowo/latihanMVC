@@ -9,6 +9,9 @@ import dw.tyhmeleaf.paractice1.entity.DataForm;
 import dw.tyhmeleaf.paractice1.repo.IndexRepo;
 import dw.tyhmeleaf.paractice1.services.IndexService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,7 @@ public class IndexController {
 		BindingResult bindingResult, 
 		Model model, 
 		RedirectAttributes redirectAttribute) {
+		List<String> errorMessage = new ArrayList<String>();
 		
 		if(!bindingResult.hasErrors()) {
 			if(indexService.findByEmail(indexDTO.getEmail()) == null) {
@@ -52,19 +56,22 @@ public class IndexController {
 				return "redirect:/table";
 			}else {
 				ErrorMessage msg = new ErrorMessage();
-				msg.getMessages().add("Email already used");
+				errorMessage.add("Email already used");
+				msg.setMessages(errorMessage);
+				model.addAttribute("ERROR", msg);
 				model.addAttribute("indexDTO", indexDTO);
 				return "index";
 			}
 		}else {
 			ErrorMessage msg = new ErrorMessage();
 			for(ObjectError err: bindingResult.getAllErrors()) {
-				msg.getMessages().add(err.getDefaultMessage());
+				errorMessage.add(err.getDefaultMessage());
 			}
+			msg.setMessages(errorMessage);
 			model.addAttribute("indexDTO", indexDTO);
 			model.addAttribute("ERROR", msg);
 			return "index";
-		}		
+		}
 	}
 
 	@GetMapping("/table")
